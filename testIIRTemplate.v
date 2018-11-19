@@ -1,4 +1,4 @@
-module ECE487FinalProject (clk, in, rst, out);
+module testIIRTemplate(clk, in, rst, out);
 	input [31:0] in;
 	input clk, rst;
 	output [31:0] out;
