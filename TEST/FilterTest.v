@@ -1,9 +1,12 @@
-module FilterTest(clk, rst, testOut);
-	/*Module inputs*/
+module FilterTest(clk, rst, trigOut, testOut);
+	
+	/*Module inputs and outputs*/
 	input clk, rst;
 	output wire [31:0]testOut;
+	output wire trigOut;
 	
 	wire posClk = ~clk;
+	
 	
 	/* Internal Registers */
 	reg [7:0]addrCounter;
@@ -11,6 +14,8 @@ module FilterTest(clk, rst, testOut);
 	/* Module Conntections */
 	wire [31:0]out;
 	wire [15:0]testIn;
+	
+	/* Module Definitions */
 	
 	Filter TestFiler(.clk(posClk),
 						  .rst(rst),
@@ -29,7 +34,13 @@ module FilterTest(clk, rst, testOut);
 								  .wren ( 1'b1 ),
 								  .q ( testOut )
 								 );
-
+								 
+	assign trigOut = posClk;							 
+								 
+	/* Address Counter for ROM and RAM */ 							 
+	initial addrCounter = 8'b00000000;	
+	
+	
 	always @(posedge posClk or negedge rst)
 	begin
 		if(rst == 1'b0)
