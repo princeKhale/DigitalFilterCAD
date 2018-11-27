@@ -13,14 +13,14 @@ module FilterTest(clk, rst, trigOut, testOut);
 	
 	/* Module Conntections */
 	wire [31:0]out;
-	wire [15:0]testIn;
+	wire [31:0]testIn;
 	
 	/* Module Definitions */
 	
 	Filter TestFiler(.clk(posClk),
 						  .rst(rst),
 						  .in(testIn), 
-						  .out0(out)
+						  .outTrunc(out)
 						  );
 						  
 	testROM testROM_inst(.address(addrCounter),
