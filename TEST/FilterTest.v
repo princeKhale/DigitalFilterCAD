@@ -1,11 +1,12 @@
 module FilterTest(clk, rst, trigOut, testOut);
 	
 	/*Module inputs and outputs*/
-	input clk, rst;
+	//50mhz input clock
+	input clk;
+	input	rst;
 	output wire [31:0]testOut;
 	output wire trigOut;
 	
-	wire posClk = ~clk; 
 	
 	/* Internal Registers */
 	reg [7:0]addrCounter;
@@ -13,15 +14,24 @@ module FilterTest(clk, rst, trigOut, testOut);
 	/* Module Conntections */
 	wire [31:0]out;
 	wire [31:0]testIn;
+	wire testClk;
 	wire memClk;
 	
 	/* Module Definitions */
-	halfClk memoryClk(.clk(posClk),
+	clkCounter internalClk(.clk(clk),
+								  .rst(rst),
+								  .outClk(testClk)
+								 );
+	
+	
+	
+	
+	halfClk memoryClk(.clk(testClk),
                      .rst(rst),	
  							.halfclk(memClk)	
 							);
 	
-	Filter TestFiler(.clk(posClk),
+	Filter TestFiler(.clk(testClk),
 						  .rst(rst),
 						  .in(testIn), 
 						  .outTrunc(out)
@@ -39,7 +49,7 @@ module FilterTest(clk, rst, trigOut, testOut);
 								  .q ( testOut )
 								 );
 								 
-	assign trigOut = memClk;							 
+	assign trigOut = testClk;							 
 	
 	/* Address Counter for ROM and RAM */ 							 
 	initial addrCounter = 8'b00000000;	
