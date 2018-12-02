@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
      * representation.
      */
     int numCoeffs = argc-2;
-    int k = 0;
+    int k = 0, index=0;
     char coefficients[numCoeffs][65];
     for (k; k<argc-1; k++){
         //Get input
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
         
         double n = std::stod(argv[k+1]);
         if(abs(n) > 127){
-            std::cout << "Error: Coefficient magnitude too large";
+            std::cout << "Error: Coefficient magnitude too large" << std::endl;
             return 1;
         }        
         
@@ -53,13 +53,13 @@ int main(int argc, char *argv[]) {
         //Integer binary digits
         int i = 0;
         while (i<8) {
-            coefficients[k][7-i] = '0' + integer % 2; 
+            coefficients[index][7-i] = '0' + integer % 2; 
             integer = integer / 2;
             i++;
         }
         
         //Binary point
-        coefficients[k][8] = '_';
+        coefficients[index][8] = '_';
         i++;
         
         //Fractional binary digits
@@ -68,9 +68,9 @@ int main(int argc, char *argv[]) {
             int fract_bit = fraction; 
                 if (fract_bit){ 
                     fraction -= fract_bit; 
-                    coefficients[k][i] = '1'; 
+                    coefficients[index][i] = '1'; 
                 } else {
-                    coefficients[k][i] = '0';
+                    coefficients[index][i] = '0';
                 }
                 
                 i++;
@@ -80,23 +80,23 @@ int main(int argc, char *argv[]) {
         if(neg){
             //Flip ones and zeros
             for (i=0; i<65; i++){
-                if(coefficients[k][i] == '1'){
-                    coefficients[k][i] = '0';
-                } else if(coefficients[k][i] == '0'){
-                    coefficients[k][i] = '1';
+                if(coefficients[index][i] == '1'){
+                    coefficients[index][i] = '0';
+                } else if(coefficients[index][i] == '0'){
+                    coefficients[index][i] = '1';
                 }
             }
             
             //Add one
             int carry = 1;
             for (i=64; i>=0; i--){
-                if(coefficients[k][i] != '_'){
-                    char sum = coefficients[k][i] + carry;
+                if(coefficients[index][i] != '_'){
+                    char sum = coefficients[index][i] + carry;
                     if (sum != '2'){
-                        coefficients[k][i] = sum;
+                        coefficients[index][i] = sum;
                         carry = 0;
                     } else {
-                        coefficients[k][i] = '0';
+                        coefficients[index][i] = '0';
                         carry = 1;
                     }
                 }
@@ -107,9 +107,10 @@ int main(int argc, char *argv[]) {
         
         //Display output
         for(i=0; i<65; i++){
-            std::cout << coefficients[k][i];
+            std::cout << coefficients[index][i];
         }
         std::cout << std::endl;
+        index++;
     }
     
     
