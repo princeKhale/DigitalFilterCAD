@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     int int_digits = std::stoi(argv[1]);
     int fract_digits = std::stoi(argv[2]);
     if(int_digits<0 || fract_digits<0){
-        std::cout << "Warning: Negative digits specified. Taking absolute value..." << std::endl;
+        std::cout << "Warning: Negative width specified. Taking absolute value..." << std::endl;
         int_digits = abs(int_digits);
         fract_digits = abs(fract_digits);
     }
@@ -42,25 +42,26 @@ int main(int argc, char *argv[]) {
     
     int coeffLength = int_digits + fract_digits + 1;
     
-    /* Parse each coefficient argument as a double, into a char array of its binary 
+    /* Parse each coefficient argument as a double into a char array of its binary 
      * representation.
      */
     int numCoeffs = argc-2;
     int k = 0, index=0;
     char coefficients[numCoeffs][coeffLength];
     for (k; k<argc-3; k++){
-        //Get input
+        //Skip over the width arguments and the "/" symbol
         if (k == numCoeffsNumerator){
             continue;
         }
         
+        //Ensure that the coefficient listed can be contained in the width specified
         double n = std::stod(argv[k+3]);
         if(abs(n) > pow(2, int_digits-1)-1){
             std::cout << "Error: Coefficient magnitude too large." << std::endl;
             return 1;
         }        
         
-        //Split the input into the integer and fractional portions
+        //Split the input into its integer and fractional portions
         bool neg = false;
         if (n<0){
             neg = true;
@@ -70,7 +71,7 @@ int main(int argc, char *argv[]) {
         double fraction = n-integer;
         
         
-        //Integer binary digits
+        //Convert integer decimal digits into char binary digits
         int i = 0;
         while (i<int_digits) {
             coefficients[index][int_digits-1-i] = '0' + integer % 2; 
@@ -78,11 +79,11 @@ int main(int argc, char *argv[]) {
             i++;
         }
         
-        //Binary point
+        //Insert binary point into the array representation
         coefficients[index][int_digits] = '_';
         i++;
         
-        //Fractional binary digits
+        //Convert fractional decimal digits into char binary digits
         while (i<coeffLength){
         fraction *= 2; 
             int fract_bit = fraction; 
@@ -96,7 +97,7 @@ int main(int argc, char *argv[]) {
                 i++;
         }
             
-        //Two's complement if the coefficient was negative
+        //Take two's complement if the coefficient was negative
         if(neg){
             //Flip ones and zeros
             for (i=0; i<65; i++){
