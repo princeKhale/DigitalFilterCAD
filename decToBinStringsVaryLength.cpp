@@ -1,0 +1,138 @@
+/* Purpose: Parses multiple input coefficients and provides ability to separate into numerator
+ * and denominator coefficients.
+ * 
+ * Input format: "./executable integer_digits fractional_digits numeratorCoeff1 (...) / (denominatorCoeff1 (...))"
+ * The digit arguments, at least one numerator coefficient value, and the "/" are REQUIRED for program to run.
+ * Multiple numerator coefficients and any denominator coefficients are optional arguments.
+ */
+#include <bitset>
+#include <iostream>
+#include <cstdlib>
+#include <stdlib.h>
+#include <math.h>
+
+int main(int argc, char *argv[]) {
+    /*Determines the number of coefficients belonging to the numerator of the transfer
+     * function.  This number MUST be at least 1 for this code to function, as the
+     * system response would always be zero if the transfer function is also zero.
+     */
+    int numCoeffsNumerator = 1;
+    for(numCoeffsNumerator; numCoeffsNumerator<argc-2; numCoeffsNumerator++){
+        char *arg = argv[numCoeffsNumerator+3];
+        if(arg[0] == '/')
+            break;            
+    }
+    std::cout << numCoeffsNumerator << " coeffs in numerator" << std::endl;
+    
+    
+    /* The first two arguments allow user to specify number of digits for the inputs
+     * and outputs.  This section checks if these digits are invalid and informs the user.
+     */
+    int int_digits = std::stoi(argv[1]);
+    int fract_digits = std::stoi(argv[2]);
+    if(int_digits<0 || fract_digits<0){
+        std::cout << "Warning: Negative digits specified. Taking absolute value..." << std::endl;
+        int_digits = abs(int_digits);
+        fract_digits = abs(fract_digits);
+    }
+    if(int_digits == 0 && fract_digits == 0) {
+        std::cout << "Error: Input and output width specified as zero." << std::endl;
+        return 1;
+    }
+    
+    int coeffLength = int_digits + fract_digits + 1;
+    
+    /* Parse each coefficient argument as a double, into a char array of its binary 
+     * representation.
+     */
+    int numCoeffs = argc-2;
+    int k = 0, index=0;
+    char coefficients[numCoeffs][coeffLength];
+    for (k; k<argc-3; k++){
+        //Get input
+        if (k == numCoeffsNumerator){
+            continue;
+        }
+        
+        double n = std::stod(argv[k+3]);
+        if(abs(n) > pow(2, int_digits-1)-1){
+            std::cout << "Error: Coefficient magnitude too large." << std::endl;
+            return 1;
+        }        
+        
+        //Split the input into the integer and fractional portions
+        bool neg = false;
+        if (n<0){
+            neg = true;
+            n = abs(n);
+        }
+        int integer = n;
+        double fraction = n-integer;
+        
+        
+        //Integer binary digits
+        int i = 0;
+        while (i<int_digits) {
+            coefficients[index][int_digits-1-i] = '0' + integer % 2; 
+            integer = integer / 2;
+            i++;
+        }
+        
+        //Binary point
+        coefficients[index][int_digits] = '_';
+        i++;
+        
+        //Fractional binary digits
+        while (i<coeffLength){
+        fraction *= 2; 
+            int fract_bit = fraction; 
+                if (fract_bit){ 
+                    fraction -= fract_bit; 
+                    coefficients[index][i] = '1'; 
+                } else {
+                    coefficients[index][i] = '0';
+                }
+                
+                i++;
+        }
+            
+        //Two's complement if the coefficient was negative
+        if(neg){
+            //Flip ones and zeros
+            for (i=0; i<65; i++){
+                if(coefficients[index][i] == '1'){
+                    coefficients[index][i] = '0';
+                } else if(coefficients[index][i] == '0'){
+                    coefficients[index][i] = '1';
+                }
+            }
+            
+            //Add one
+            int carry = 1;
+            for (i=coeffLength-1; i>=0; i--){
+                if(coefficients[index][i] != '_'){
+                    char sum = coefficients[index][i] + carry;
+                    if (sum != '2'){
+                        coefficients[index][i] = sum;
+                        carry = 0;
+                    } else {
+                        coefficients[index][i] = '0';
+                        carry = 1;
+                    }
+                }
+            }
+            
+        }
+        
+        
+        //Display output
+        for(i=0; i<coeffLength; i++){
+            std::cout << coefficients[index][i];
+        }
+        std::cout << std::endl;
+        index++;
+    }
+    
+    
+    return 0;
+}
