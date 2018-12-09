@@ -1,5 +1,5 @@
 Analysis & Synthesis report for FilterTest
-Sat Dec 08 21:52:16 2018
+Sun Dec 09 14:40:01 2018
 Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 
 
@@ -37,7 +37,7 @@ agreement for further details.
 +---------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                              ;
 +-----------------------------+---------------------------------------------+
-; Analysis & Synthesis Status ; Failed - Sat Dec 08 21:52:16 2018           ;
+; Analysis & Synthesis Status ; Failed - Sun Dec 09 14:40:01 2018           ;
 ; Quartus Prime Version       ; 16.1.0 Build 196 10/24/2016 SJ Lite Edition ;
 ; Revision Name               ; FilterTest                                  ;
 ; Top-level Entity Name       ; FilterTest                                  ;
@@ -161,7 +161,7 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
-    Info: Processing started: Sat Dec 08 21:51:58 2018
+    Info: Processing started: Sun Dec 09 14:39:48 2018
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off FilterTest -c FilterTest
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20032): Parallel compilation is enabled and will use up to 4 processors
@@ -176,8 +176,8 @@ Error (10170): Verilog HDL syntax error at filter.v(29) near text: "supply0";  e
 Error (10112): Ignored design unit "filter" at filter.v(1) due to previous errors File: C:/Users/Prince Khael/Desktop/School/ECE487/Project/Git/DigitalFilterCAD/TEST/filter.v Line: 1
 Error: Quartus Prime Analysis & Synthesis was unsuccessful. 3 errors, 3 warnings
     Error: Peak virtual memory: 4792 megabytes
-    Error: Processing ended: Sat Dec 08 21:52:16 2018
-    Error: Elapsed time: 00:00:18
-    Error: Total CPU time (on all processors): 00:00:27
+    Error: Processing ended: Sun Dec 09 14:40:02 2018
+    Error: Elapsed time: 00:00:14
+    Error: Total CPU time (on all processors): 00:00:30
 
 

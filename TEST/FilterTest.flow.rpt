@@ -1,5 +1,5 @@
 Flow report for FilterTest
-Sat Dec 08 21:52:16 2018
+Sun Dec 09 14:40:01 2018
 Quartus Prime Version 16.1.0 Build 196 10/24/2016 SJ Lite Edition
 
 
@@ -41,7 +41,7 @@ agreement for further details.
 +---------------------------------------------------------------------------+
 ; Flow Summary                                                              ;
 +-----------------------------+---------------------------------------------+
-; Flow Status                 ; Flow Failed - Sat Dec 08 21:52:16 2018      ;
+; Flow Status                 ; Flow Failed - Sun Dec 09 14:40:01 2018      ;
 ; Quartus Prime Version       ; 16.1.0 Build 196 10/24/2016 SJ Lite Edition ;
 ; Revision Name               ; FilterTest                                  ;
 ; Top-level Entity Name       ; FilterTest                                  ;
@@ -63,7 +63,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 12/08/2018 21:52:00 ;
+; Start date & time ; 12/09/2018 14:39:49 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; FilterTest          ;
 +-------------------+---------------------+
@@ -74,7 +74,7 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 24062491136.154432392008044            ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 605497983889.154438438916260           ; --            ; --          ; --         ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
 ; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
 ; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
@@ -86,8 +86,8 @@ agreement for further details.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:18     ; 1.0                     ; 4792 MB             ; 00:00:27                           ;
-; Total                ; 00:00:18     ; --                      ; --                  ; 00:00:27                           ;
+; Analysis & Synthesis ; 00:00:13     ; 1.0                     ; 4792 MB             ; 00:00:30                           ;
+; Total                ; 00:00:13     ; --                      ; --                  ; 00:00:30                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
