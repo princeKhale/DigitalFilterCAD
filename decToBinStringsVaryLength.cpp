@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     for(numCoeffsNumerator; numCoeffsNumerator<argc-2; numCoeffsNumerator++){
         char *arg = argv[numCoeffsNumerator+3];
         if(arg[0] == '/')
-            break;            
+            break;
     }
     std::cout << numCoeffsNumerator << " coeffs in numerator" << std::endl;
     
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     /* Parse each coefficient argument as a double into a char array of its binary 
      * representation.
      */
-    int numCoeffs = argc-2;
+    int numCoeffs = argc-4;
     int k = 0, index=0;
     char coefficients[numCoeffs][coeffLength];
     for (k; k<argc-3; k++){
@@ -133,7 +133,8 @@ int main(int argc, char *argv[]) {
         std::cout << std::endl;
         index++;
     }
-    
+    int numCoeffsDenominator = index - numCoeffsNumerator;
+    std::cout << numCoeffsDenominator << " coeffs in denominator" << std::endl;
     
     return 0;
 }
