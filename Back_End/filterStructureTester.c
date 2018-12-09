@@ -11,15 +11,16 @@ int main(int argc, char *argv[]){
 	section_t *aSection;
 	section_t *bSection;
 		
-	uint8_t numOfACoefficients = 2;
+	uint8_t numOfACoefficients = 3;
 	char **testACoefficients = (char**)malloc(sizeof(char*) * numOfACoefficients);
 	
-	testACoefficients[0] = "1000_1001";
-	testACoefficients[1] = "0010_1100";
-	
+	testACoefficients[0] = "0000000000000001_0000000000000000";
+	testACoefficients[1] = "0000000000000000_1100000000000000";
+	testACoefficients[2] = "0000000000000000_0100000000000000";	
+
 	uint8_t numOfBCoefficients = 1;
 	char **testBCoefficients = (char**)malloc(sizeof(char*) * numOfACoefficients);
-	testBCoefficients[0] = "0001_0000";
+	testBCoefficients[0] = "0000000000000001_0000000000000000";
 
 	
 	aSection = (section_t*)buildSectionStructure(numOfACoefficients, testACoefficients);
