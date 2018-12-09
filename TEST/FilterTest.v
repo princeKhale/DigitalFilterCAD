@@ -14,15 +14,16 @@ module FilterTest(clk, rst, trigOut, testOut);
 	/* Module Conntections */
 	wire [31:0]out;
 	wire [31:0]testIn;
-	wire testClk;
+	wire testClk = ~clk;
 	wire memClk;
 	
 	/* Module Definitions */
+	/*
 	clkCounter internalClk(.clk(clk),
 								  .rst(rst),
 								  .outClk(testClk)
 								 );
-	
+	*/
 	
 	
 	

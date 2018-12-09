@@ -1,80 +1,38 @@
-module Filter(clk, rst, in, outTrunc);
+module filter(clk, rst, in, out);
 	
-	
-	input signed [31:0]in;
+/*==== Filter Clock and Reset Instantiations ====*/
 	input clk, rst;
-	output wire signed [31:0]outTrunc;
 	
+/*==== Input Section Wire Instantiations ====*/
+	wire [31:0]aSectionDelay0_out_to_Multi1_in
+	wire [31:0]aSectionMulti1_out_to_Adder0_in
+	wire [31:0]aSectionAdder0_out_to_Multi0_in
+	wire [31:0]aSectionSectionInput_to_Adder0_in
+	wire [31:0]aSectionMulti0_out_to_SectionOutput
 	
-	reg signed [31:0]in0;
-	reg signed [63:0] v;
-	reg signed [31:0]in1;
-	reg signed [31:0]in2;
+/*====  Output Section Wire Instantiations ====*/
+	wire [31:0]bSectionSectionInput_to_Multi0_in
+	wire [31:0]bSectionMulti0_out_to_SectionOutput
 	
-	wire signed [63:0] a0_in0;
-	wire signed [63:0] a1_in1;
-	wire signed [63:0] a2_in2;
-	wire signed [63:0] b0_v;
+/*====  Input Section Multiplier Instantiations ====*/
+	Multiplier aSectionMulti0(.input0(aSectionAdder0_out_to_Multi0_in), .input1(32'b0000000000000000_0000000000000000), .out(aSectionMulti0_out_to_SectionOutput));
+	Multiplier aSectionMulti1(.input0(aSectionDelay0_out_to_Multi1_in), .input1(32'b0000000000000000_1100000000000000), .out(aSectionMulti1_out_to_Adder0_in));
 	
+/*====  Output Section Multiplier Instantiations ====*/
+	/*The first multiplier has to have the input and outputs swapped*/
+	Multiplier bSectionMulti0(.input0(bSectionMulti0_out_to_SectionOutput), .input1(32'b0000000000000001_0000000000000000), .out(bSectionSectionInput_to_Multi0_in));
 	
-	
-	/* Test:
-		H(z) = 1/(1 - 0.75z^-1 + 0.25z^-2)
-		a0 = 1 
-	
-	I[n]-------->[x]---(V[n])---->[x]
-	              ^      |         ^      
-					  |      |         |  
-					  a0     |         b0 
-					        [z^-1]
-					         |
-					 [x]<---
-	              ^
-					  |
-					  a1
-	
-	
-	
-	*/
-	
-	initial 
-	begin
-		in0 = 32'b0000000000000000_0000000000000000;
-		in1 = 32'b0000000000000000_0000000000000000;
-		in2 = 32'b0000000000000000_0000000000000000;
-	end
-	
-	reg signed [31:0] a0 =  32'b0000000000000001_0000000000000000;
-	reg signed [31:0] a1 = -32'b0000000000000000_1100000000000000;
-	reg signed [31:0] a2 =  32'b0000000000000000_0100000000000000;
-	reg signed [31:0] b0 =  32'b0000000000000001_0000000000000000;
-	
-	// Invert the sign of ak with k >= 1
-	assign a0_in0 = a0 * in0;
-	assign a1_in1 = a1 * in1;
-	assign a2_in2 = a2 * in2;
-	assign b0_v = b0 * v; 
+/*====  Input Section Adder Instantiations ====*/
+	Adders aSectionAdder0(.input0(aSectionSectionInput_to_Adder0_in), .input1(aSectionMulti1_out_to_Adder0_in), .out(aSectionAdder0_out_to_Multi0_in));
 
-	assign outTrunc = b0_v[47:16];
-	
-	
-	always @(posedge clk or negedge rst)
-	begin
-			if(rst == 1'b0) 
-			begin
-				in0 <= 32'b0000000000000000_0000000000000000;
-				in1 <= 32'b0000000000000000_0000000000000000;
-				in2 <= 32'b0000000000000000_0000000000000000;
-			end 
-				
-			else 
-			begin
-				in2 <= in1;
-				in1 <= v[47:16];
-				in0 <= in; 
+	/*==== Input Delay Instantiations ====*/
+	Delay aSectionDelay0(.clk(clk), .rst(rst), .in(aSectionMulti0_out_to_SectionOutput), .outMulti(aSectionDelay0_out_to_Multi1_in), .outDelay(supply0)
+	/*====  Section Connection Instantiations ====*/
+	reg [31:0]SectionConnection;
+	assign Multi0_out_to_SectionOutput = SectionConnection;
 
-				v <= a0_in0 + a1_in1 + a2_in2;
-			end
+	always@(posedge clk or negedge rst)
+	begin
+		SectionConnection = Multi0_out_to_SectionOutput;
 	end
-	
-endmodule 
+endmodule
