@@ -1,7 +1,8 @@
-module Adder(a, b, c);
-	input [63:0]a, b;
-	output wire [63:0]c;
+module Adder(input0, input1, out);
+
+	input signed [31:0]input0, input1;
+	output wire signed [31:0]out;
 	
-	assign c = a + b; 
+	assign out = input0 + input1; 
 	
 endmodule

@@ -1,18 +1,20 @@
-module Delay(clk, rst, in, out);
+module Delay(clk, rst, in, outMulti, outDelay);
 
 	input clk, rst;
-	input [63:0]in;
-	output [63:0]out;
+	input signed [31:0]in;
+	output wire signed [31:0]outMulti, outDelay;
 	
+	reg signed [31:0]delay;
+	
+	assign outMulti = delay;
+	assign outDelay = delay;
 	
 	always @(posedge clk or negedge rst)
 	begin
 		if(rst == 1'b0)
-			out <= 64'b0000000000000000000000000000000000000000000000000000000000000000;
+			delay <= 32'b0000000000000000_0000000000000000;
 		else
-			out <= in;
-		end
+			delay <= in;
 	end
-	
 	
 endmodule
