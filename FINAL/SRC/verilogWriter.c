@@ -1,9 +1,15 @@
 #include "main.h"
 
 
-void writeVerilog(section_t *input, section_t *output){
+void writeVerilog(int coeffLength, section_t *input, section_t *output){
 	FILE *mainVerilogFile = fopen("./TEST/OUTPUT/Filter.v", "w");		
-	
+
+	char *rstVal = (char*)malloc(sizeof(char) * coeffLength);
+	char *zeroRep = (char*)"0";
+	for(int i = 0; i < coeffLength; i++){
+		rstVal[i] = *zeroRep;
+	}
+		
 	/* Write module declaration */
 	fprintf(mainVerilogFile, "%s\n" , "module Filter(clk, rst, in, out);");	
 
@@ -12,9 +18,11 @@ void writeVerilog(section_t *input, section_t *output){
 	
 
 	fprintf(mainVerilogFile, "	%s%s\n", "input clk,", " rst;");
-	fprintf(mainVerilogFile, "	input signed %s;\n", "[31:0]in" );
 	
-	fprintf(mainVerilogFile, "	output wire signed %s;\n", "[31:0]out");
+	/* Input instantiation */
+	fprintf(mainVerilogFile, "	input signed [%d:0]in;\n", coeffLength);
+	
+	fprintf(mainVerilogFile, "	output wire signed [%d:0]out;\n", coeffLength);
 		
 	fprintf(mainVerilogFile, "	assign out = %s%s;\n", output->ID, output->sectionOutput->ID);
 			
@@ -28,34 +36,36 @@ void writeVerilog(section_t *input, section_t *output){
 
 	/* Input wires */
 	for(int i = 0; i < input->numOfEdges; i++){
-		fprintf(mainVerilogFile, "	wire signed [31:0]%s%s;\n", input->ID, input->edges[i]->ID);
+		fprintf(mainVerilogFile, "	wire signed [%d:0]%s%s;\n", coeffLength, input->ID, input->edges[i]->ID);
 	}
 	
 	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Wire Instantiations ===="); 
 	
 	/* Output wires */ 
 	for(int i = 0; i < output->numOfEdges; i++){
-		fprintf(mainVerilogFile, "	wire signed [31:0]%s%s;\n", output->ID, output->edges[i]->ID);
+		fprintf(mainVerilogFile, "	wire signed [%d:0]%s%s;\n", coeffLength, output->ID, output->edges[i]->ID);
 	}
 	
 
-
-	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Input Section Multiplier Instantiations ===="); 
+	if(input->numOfMultipliers >= 1)
+		fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Input Section Multiplier Instantiations ===="); 
 	
 	/* Write input Multipliers */ 
 	for(int i = 0; i < input->numOfMultipliers; i++){
-		fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(32'b%s), .out(%s%s));\n", 
+		fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(%d'b%s), .out(%s%s));\n", 
 		input->ID,
 		input->multipliers[i].ID,
 		input->ID, 
 		input->multipliers[i].inputConnect->ID,
+		coeffLength,
 		input->multipliers[i].coefficient,
 		input->ID,
 		input->multipliers[i].outputConnect->ID
 		);
 	}
-		
-	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Multiplier Instantiations ===="); 
+	
+	if(output->numOfMultipliers >= 1)	
+		fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Multiplier Instantiations ===="); 
 	
 	/* Write output Multipliers */ 
 	for(int i = 0; i < output->numOfMultipliers; i++){
@@ -64,22 +74,24 @@ void writeVerilog(section_t *input, section_t *output){
 		if(i == 0){
 			
 			fprintf(mainVerilogFile, "	/*%s*/\n", "The first multiplier has to have the input and outputs swapped");
-			fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(32'b%s), .out(%s%s));\n", 
+			fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(%d'b%s), .out(%s%s));\n", 
 			output->ID,
 			output->multipliers[i].ID,
 			output->ID, 
 			output->multipliers[i].outputConnect->ID,
+			coeffLength,
 			output->multipliers[i].coefficient,
 			output->ID,
 			output->multipliers[i].inputConnect->ID
 			);
 		}else{
 
-			fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(32'b%s), .out(%s%s));\n", 
+			fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(%d'b%s), .out(%s%s));\n", 
 			output->ID,
 			output->multipliers[i].ID,
 			output->ID, 
 			output->multipliers[i].inputConnect->ID,
+			coeffLength,
 			output->multipliers[i].coefficient,
 			output->ID,
 			output->multipliers[i].outputConnect->ID
@@ -87,8 +99,8 @@ void writeVerilog(section_t *input, section_t *output){
 		}
 	}
 	
-		
-	fprintf(mainVerilogFile, "	\n/*%s*/\n",  "====  Input Section Adder Instantiations ===="); 
+	if(input->numOfAdders >= 1)
+		fprintf(mainVerilogFile, "	\n/*%s*/\n",  "====  Input Section Adder Instantiations ===="); 
 		
 	/* Write input Adders */
 	for(int i = 0; i < input->numOfAdders; i++){
@@ -104,9 +116,8 @@ void writeVerilog(section_t *input, section_t *output){
 		);
 	}
 
-	if(output->numOfAdders != 0){		
+	if(output->numOfAdders >= 1)
 		fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Adder Instantiations ===="); 
-	}
 
 	/* Write output Adders */
 	for(int i = 0; i < output->numOfAdders; i++){
@@ -139,7 +150,8 @@ void writeVerilog(section_t *input, section_t *output){
 		}
 	}
 	
-	fprintf(mainVerilogFile, "\n	/*%s*/\n", "==== Input Delay Instantiations ====");
+	if(input->numOfDelays >= 1)
+		fprintf(mainVerilogFile, "\n	/*%s*/\n", "==== Input Delay Instantiations ====");
 	
 	/* Write input delays */
 	for(int i = 0; i < input->numOfDelays; i++){
@@ -168,8 +180,9 @@ void writeVerilog(section_t *input, section_t *output){
 			);	
 		}
 	}
-		
-	fprintf(mainVerilogFile, "\n	/*%s*/\n", "==== Output Delay Instantiations ====");
+	
+	if(output->numOfDelays >= 1)	
+		fprintf(mainVerilogFile, "\n	/*%s*/\n", "==== Output Delay Instantiations ====");
 	
 	/* Write output Delays */
 	for(int i = 0; i < output->numOfDelays; i++){
@@ -201,7 +214,7 @@ void writeVerilog(section_t *input, section_t *output){
 	/* Connect Sections together and add filter inputs and outputs reversing the input and output of the 2nd (outputSection) */	
 	fprintf(mainVerilogFile, "\n	/*%s*/\n",  "====  Section Connection Instantiations ===="); 
 	
-	fprintf(mainVerilogFile, "	%s\n", "reg signed [31:0]SectionConnection;" );
+	fprintf(mainVerilogFile, "	reg signed [%d:0]SectionConnection;\n", coeffLength);
 
 	/* Connect the SectionConnection reg to the input (which was the output in the data structure) of the output section */ 
 	fprintf(mainVerilogFile, "	assign %s%s = SectionConnection;\n" , output->ID, output->sectionOutput->ID); 
@@ -209,7 +222,8 @@ void writeVerilog(section_t *input, section_t *output){
 	/* Give SectionConnection Something to latch on */
 	fprintf(mainVerilogFile, "\n	always@(posedge clk or negedge rst)\n");
 	fprintf(mainVerilogFile, "	%s\n", "begin");
-	fprintf(mainVerilogFile, "	%s\n		%s <= %s;\n", "if(rst == 1'b0)","SectionConnection", "32'b0000000000000000_0000000000000000");
+
+	fprintf(mainVerilogFile, "	%s\n		%s <= %d'%s;\n", "if(rst == 1'b0)","SectionConnection", coeffLength, rstVal );
 	fprintf(mainVerilogFile, "	%s\n		%s <= %s%s;\n", "else",  "SectionConnection", input->ID, input->sectionOutput->ID);
 	fprintf(mainVerilogFile, "	%s\n", "end");	
 

@@ -47,8 +47,6 @@ int main(int argc, char *argv[]) {
     int numCoeffs = argc-4;
     int k = 0, index=0;
     char coefficients[numCoeffs][coeffLength];
-
-    //char **coefficients = (char**)malloc(sizeof(char*) * numCoeffs);
     
     for (k; k<argc-3; k++){
         //Skip over the width arguments and the "/" symbol
@@ -157,7 +155,7 @@ int main(int argc, char *argv[]) {
  
     /* Call to the helper function which handles back end execution */	
        
-    buildStructuresHelper(numCoeffsNumerator, numCoeffsDenominator, coeffs);   
+    buildStructuresHelper(coeffLength - 1, numCoeffsNumerator, numCoeffsDenominator, coeffs);   
     
     
     
