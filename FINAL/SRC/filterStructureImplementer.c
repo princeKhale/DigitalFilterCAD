@@ -33,6 +33,7 @@ void buildStructuresHelper(int numOfNumeratorCoeffs, int numOfDenominatorCoeffs,
 	uint8_t curCoeff = 0;
 
 	for(int i = 0; i < numOfNumeratorCoeffs; i++){
+		printf("%s\n" , coeffs[curCoeff]);
 		numeratorCoeffs[i] = coeffs[curCoeff];
 		curCoeff = curCoeff + 1;
 	}	
@@ -48,9 +49,13 @@ void buildStructuresHelper(int numOfNumeratorCoeffs, int numOfDenominatorCoeffs,
 
 	//Output Section 
 	ret[0] = (section_t*)buildSectionStructure((uint8_t)numOfNumeratorCoeffs, numeratorCoeffs);
-	
+	char *outputID = (char*)"outSection";
+	ret[0]->ID = outputID;	
+
 	//Input Section
 	ret[1] = (section_t*)buildSectionStructure((uint8_t)numOfDenominatorCoeffs, denominatorCoeffs);
+	char *inputID = (char*)"inSection";
+	ret[1]->ID = inputID;
 
 	writeVerilog(ret[1], ret[0]);
 }

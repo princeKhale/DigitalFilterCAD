@@ -139,10 +139,19 @@ int main(int argc, char *argv[]) {
     std::cout << numCoeffsDenominator << " coeffs in denominator" << std::endl;
     
 
-    /* Make a shallow copy reference to the coefficients for passing to the helper function */ 
+    /* Make a deep copy reference to the coefficients for passing to the helper function */ 
     char **coeffs = (char**)malloc(sizeof(char*) * numCoeffs);		
     for(int i = 0; i < numCoeffs; i++){
-	coeffs[i] = coefficients[i];	
+	printf("\n%s\n", "Coeff Transfer");
+	char *stringToAdd = (char*)malloc(sizeof(char) * coeffLength);
+	for(int j = 0; j < coeffLength; j++){
+		char *curCharToAdd = (char*)malloc(sizeof(char));
+		*curCharToAdd = coefficients[i][j];
+		strcat(stringToAdd, curCharToAdd);
+		free(curCharToAdd);
+	}
+
+	coeffs[i] = stringToAdd;	
     }
 	
  

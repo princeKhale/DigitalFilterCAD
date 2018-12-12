@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdint.h>
+#include <string.h>
 #include "structures.h"
 
 
