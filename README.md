@@ -6,8 +6,8 @@ In the bash command line:
 ./executable integer_digits fractional_digits numerator_coefficient (...) / (denominator_coefficient (...)) optimize_true
 ### Arguments:
   #### integer_digits
-    Type: int
-    Meaning: Number of binary digits before the binary point, representing integer digits of the input and output.  REQUIRED for the program to run.
+   - Type: int
+   - Meaning: Number of binary digits before the binary point, representing integer digits of the input and output.  REQUIRED for the program to run.
   #### fractional_digits
     Type: int
     Meaning: Number of binary digits after the binary point, representing fractional digits of the input and output.  REQUIRED
