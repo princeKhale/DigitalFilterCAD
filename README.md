@@ -26,4 +26,7 @@ In the bash command line:
   #### Input
     ./DigitalFilterCAD.out 16 64 1 -3 6.9 / -3.14159265 0.33333333333 1
   #### Output
+    Verilog module with arguments of the form (clock, reset, input, output)
     
+## Output
+A Verilog module for the desired filter.
