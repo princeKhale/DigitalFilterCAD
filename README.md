@@ -1,5 +1,8 @@
 # DigitalFilterCAD
 A CAD tool that aids in the implementation of digital filters on FPGAs with Verilog.
+## File Structure
+
+## Building
 
 ## Input:
 In the bash command line:
