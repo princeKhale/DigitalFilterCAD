@@ -1,9 +1,9 @@
 /* Purpose: Parses multiple input coefficients and provides ability to separate into numerator
  * and denominator coefficients.
  * 
- * Input format: "./executable integer_digits fractional_digits numeratorCoeff1 (...) / (denominatorCoeff1 (...))"
- * The digit arguments, at least one numerator coefficient value, and the "/" are REQUIRED for program to run.
- * Multiple numerator coefficients and any denominator coefficients are optional arguments.
+ * Input format: "./executable integer_digits fractional_digits numeratorCoeff1 (...) / (denominatorCoeff1 (...) optimize_true)"
+ * The digit arguments, at least one numerator coefficient value, optimize_true, & the "/" are REQUIRED for program to run.
+ * Multiple numerator coefficients and any denominator coefficients are optional arguments "(...)".
  */
 
 
@@ -40,15 +40,20 @@ int main(int argc, char *argv[]) {
     }
     
     int coeffLength = int_digits + fract_digits + 1;
+    int numCoeffs = argc-5;
+    
+    int optimize_true = atoi(argv[argc-1]);
+    int optimizable[numCoeffs];
+    
     
     /* Parse each coefficient argument as a double into a char array of its binary 
      * representation.
      */
-    int numCoeffs = argc-4;
+    
     int k = 0, index=0;
     char coefficients[numCoeffs][coeffLength];
     
-    for (k; k<argc-3; k++){
+    for (k; k<argc-4; k++){
         //Skip over the width arguments and the "/" symbol
         if (k == numCoeffsNumerator){
             continue;
@@ -60,6 +65,10 @@ int main(int argc, char *argv[]) {
             std::cout << "Error: Coefficient magnitude too large." << std::endl;
             return 1;
         }        
+        
+        if(optimize_true){
+            optimizable[index] = n;
+        }
         
         //Split the input into its integer and fractional portions
         bool neg = false;
@@ -155,7 +164,7 @@ int main(int argc, char *argv[]) {
  
     /* Call to the helper function which handles back end execution */	
        
-    buildStructuresHelper(coeffLength - 1, numCoeffsNumerator, numCoeffsDenominator, coeffs);   
+    buildStructuresHelper(coeffLength - 1, numCoeffsNumerator, numCoeffsDenominator, coeffs, optimizable, optimize_true);   
     
     
     
