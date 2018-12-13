@@ -1,7 +1,8 @@
 # DigitalFilterCAD
 A CAD tool that aids in the implementation of digital filters on FPGAs with Verilog.
 
-## Input Format:
+## Input:
+In the bash command line:
 ./executable integer_digits fractional_digits numerator_coefficient (...) / (denominator_coefficient (...)) optimize_true
 ### Arguments:
   #### integer_digits
@@ -21,3 +22,8 @@ A CAD tool that aids in the implementation of digital filters on FPGAs with Veri
   #### optimize_true
     Type: Int
     Meaning: Enable logical optimizations to reduce filter area on the board. "0" will disable optimization; any nonzero value will enable optimization.  REQUIRED for the program to run.
+### Example:
+  #### Input
+    ./DigitalFilterCAD.out 16 64 1 -3 6.9 / -3.14159265 0.33333333333 1
+  #### Output
+    
