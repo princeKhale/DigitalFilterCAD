@@ -3,7 +3,7 @@ A CAD tool that aids in the implementation of digital filters on FPGAs with Veri
 
 ## Input:
 In the bash command line:
-./executable integer_digits fractional_digits numerator_coefficient (...) / (denominator_coefficient (...)) optimize_true
+  ./executable integer_digits fractional_digits numerator_coefficient (...) / (denominator_coefficient (...)) optimize_true
 ### Arguments:
   #### integer_digits
    - Type: int
