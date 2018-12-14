@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     int numCoeffs = argc-5;
     
     int optimize_true = atoi(argv[argc-1]);
-    int optimizable[numCoeffs];
+    double optimizable[numCoeffs];
     
     
     /* Parse each coefficient argument as a double into a char array of its binary 
@@ -134,14 +134,17 @@ int main(int argc, char *argv[]) {
             
         }
         
-        
+        /*
         //Display output
         for(i=0; i<coeffLength; i++){
             std::cout << coefficients[index][i];
         }
+	*/
         std::cout << std::endl;
         index++;
-    }
+   
+     }
+    
     int numCoeffsDenominator = index - numCoeffsNumerator;
     std::cout << numCoeffsDenominator << " coeffs in denominator" << std::endl;
     
@@ -149,7 +152,6 @@ int main(int argc, char *argv[]) {
     /* Make a deep copy reference to the coefficients for passing to the helper function */ 
     char **coeffs = (char**)malloc(sizeof(char*) * numCoeffs);		
     for(int i = 0; i < numCoeffs; i++){
-	printf("\n%s\n", "Coeff Transfer");
 	char *stringToAdd = (char*)malloc(sizeof(char) * coeffLength);
 	for(int j = 0; j < coeffLength; j++){
 		char *curCharToAdd = (char*)malloc(sizeof(char));
