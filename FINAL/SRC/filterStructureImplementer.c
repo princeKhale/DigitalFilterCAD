@@ -23,7 +23,7 @@ edge_t** addNewEdge(uint8_t curNumberOfEdges, edge_t** oldEdgeList, edge_t* edge
 }
 
 
-void buildStructuresHelper(int coeffLength, int numOfNumeratorCoeffs, int numOfDenominatorCoeffs, char** coeffs, double optimizeCoeff[], int isOptimize){
+void buildStructuresHelper(int coeffLength, int numOfNumeratorCoeffs, int numOfDenominatorCoeffs, char** coeffs, double optimizeCoeff[], int isOptimize, char *filename){
 	char **numeratorCoeffs;
 	char **denominatorCoeffs;
 
@@ -57,7 +57,7 @@ void buildStructuresHelper(int coeffLength, int numOfNumeratorCoeffs, int numOfD
 	char *inputID = (char*)"inSection";
 	ret[1]->ID = inputID;
 
-	writeVerilog(coeffLength, ret[1], ret[0], optimizeCoeff, isOptimize);
+	writeVerilog(coeffLength, ret[1], ret[0], optimizeCoeff, isOptimize, filename);
 }
 
 	

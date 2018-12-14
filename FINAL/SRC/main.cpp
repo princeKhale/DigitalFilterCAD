@@ -40,9 +40,10 @@ int main(int argc, char *argv[]) {
     }
     
     int coeffLength = int_digits + fract_digits + 1;
-    int numCoeffs = argc-5;
+    int numCoeffs = argc-6;
     
-    int optimize_true = atoi(argv[argc-1]);
+    char *outputFilename = argv[argc-1];
+    int optimize_true = atoi(argv[argc-2]);
     double optimizable[numCoeffs];
     
     
@@ -53,7 +54,7 @@ int main(int argc, char *argv[]) {
     int k = 0, index=0;
     char coefficients[numCoeffs][coeffLength];
     
-    for (k; k<argc-4; k++){
+    for (k; k<argc-5; k++){
         //Skip over the width arguments and the "/" symbol
         if (k == numCoeffsNumerator){
             continue;
@@ -166,7 +167,7 @@ int main(int argc, char *argv[]) {
  
     /* Call to the helper function which handles back end execution */	
        
-    buildStructuresHelper(coeffLength - 1, numCoeffsNumerator, numCoeffsDenominator, coeffs, optimizable, optimize_true);   
+    buildStructuresHelper(coeffLength - 1, numCoeffsNumerator, numCoeffsDenominator, coeffs, optimizable, optimize_true, outputFilename);   
     
     
     

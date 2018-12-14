@@ -1,8 +1,8 @@
 #include "main.h"
 
 
-void writeVerilog(int coeffLength, section_t *input, section_t *output, double optimizeCoeffs[], int isOptimize){
-	FILE *mainVerilogFile = fopen("./TEST/OUTPUT/Filter.v", "w");		
+void writeVerilog(int coeffLength, section_t *input, section_t *output, double optimizeCoeffs[], int isOptimize, char *filename){
+	FILE *mainVerilogFile = fopen(filename, "w");		
 
 	char *rstVal = (char*)malloc(sizeof(char) * coeffLength);
 	char zeroRep = '0';
@@ -25,7 +25,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 	fprintf(mainVerilogFile, "%s\n" , "module Filter(clk, rst, in, out);");	
 
 	/* Clk, Rst Instantiations*/
-	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "==== Filter Port Instantiations ===="); 
+	fprintf(mainVerilogFile,"\n	/*%s*/\n",  "==== Filter Port Instantiations ===="); 
 	
 
 	fprintf(mainVerilogFile, "	%s%s\n", "input clk,", " rst;");
@@ -44,14 +44,14 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 	fprintf(mainVerilogFile, "	wire [%d:0]%s = GND;\n", coeffLength - 1, "endDelayTermination");	
 	
 	/* Wire Instantiations */
-	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "==== Input Section Wire Instantiations ===="); 
+	fprintf(mainVerilogFile,"\n	/*%s*/\n",  "==== Input Section Wire Instantiations ===="); 
 
 	/* Input wires */
 	for(int i = 0; i < input->numOfEdges; i++){
 		fprintf(mainVerilogFile, "	wire signed [%d:0]%s%s;\n", coeffLength - 1, input->ID, input->edges[i]->ID);
 	}
 	
-	fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Wire Instantiations ===="); 
+	fprintf(mainVerilogFile,"\n	/*%s*/\n",  "====  Output Section Wire Instantiations ===="); 
 	
 	/* Output wires */ 
 	for(int i = 0; i < output->numOfEdges; i++){
@@ -60,7 +60,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 
 
 	if(output->numOfMultipliers >= 1)	
-		fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Output Section Multiplier Instantiations ===="); 
+		fprintf(mainVerilogFile,"\n	/*%s*/\n",  "====  Output Section Multiplier Instantiations ===="); 
 	
 	/* Write output Multipliers */ 
 	for(int i = 0; i < output->numOfMultipliers; i++){		
@@ -87,7 +87,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 				/* The first multiplier of the output section needs to have its inputs and outputs flipped */
 				if(i == 0){
 			
-					fprintf(mainVerilogFile, "	/*%s*/\n", "The first multiplier has to have the input and outputs swapped");
+					fprintf(mainVerilogFile, "	/*%s*/\n", "The first multiplier of the output section has to have the input and outputs swapped");
 					fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(%d'b%s), .out(%s%s));\n", 
 					output->ID,
 					output->multipliers[i].ID,
@@ -121,7 +121,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 			/* The first multiplier of the output section needs to have its inputs and outputs flipped */
 			if(i == 0){
 			
-				fprintf(mainVerilogFile, "	/*%s*/\n", "The first multiplier has to have the input and outputs swapped");
+				fprintf(mainVerilogFile, "	/*%s*/\n", "The first multiplier of the output section has to have the input and outputs swapped");
 				fprintf(mainVerilogFile, "	Multiplier %s%s(.input0(%s%s), .input1(%d'b%s), .out(%s%s));\n", 
 				output->ID,
 				output->multipliers[i].ID,
@@ -150,7 +150,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 	
 
 	if(input->numOfMultipliers >= 1)
-		fprintf(mainVerilogFile,"	\n/*%s*/\n",  "====  Input Section Multiplier Instantiations ===="); 
+		fprintf(mainVerilogFile,"\n	/*%s*/\n",  "====  Input Section Multiplier Instantiations ===="); 
 	
 	/* Write input Multipliers */ 
 	for(int i = 0; i < input->numOfMultipliers; i++){
@@ -196,7 +196,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 	
 
 	if(input->numOfAdders >= 1)
-		fprintf(mainVerilogFile, "	\n/*%s*/\n",  "====  Input Section Adder Instantiations ===="); 
+		fprintf(mainVerilogFile, "\n	/*%s*/\n",  "====  Input Section Adder Instantiations ===="); 
 		
 	/* Write input Adders */
 	for(int i = 0; i < input->numOfAdders; i++){
@@ -220,7 +220,7 @@ void writeVerilog(int coeffLength, section_t *input, section_t *output, double o
 		
 		/* Swap the input and outputs of the  first adder of the Output  */
 		if(i == 0){
-			fprintf(mainVerilogFile, "\n/*	%s */\n\n", "The first adder of the output section must have the inputs and outputs flipped");
+			fprintf(mainVerilogFile, "\n	/*	%s */\n\n", "The first adder of the output section must have the inputs and outputs flipped");
 			fprintf(mainVerilogFile, "	Adder %s%s(.input0(%s%s), .input1(%s%s), .out(%s%s));\n", 
 			output->ID,
 			output->adders[i].ID,
