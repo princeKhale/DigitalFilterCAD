@@ -9,7 +9,7 @@ A CAD tool that aids in the implementation of digital filters on FPGAs with Veri
   - main.h
   - structures.h
   - verilogWriter.c
-- VERILOG_FILTER_PARTS/
+- VERILOG_BLOCKS/
   - Adder.v
   - Delay.v
   - Multiplier.v
