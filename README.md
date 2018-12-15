@@ -1,9 +1,21 @@
 # DigitalFilterCAD
 A CAD tool that aids in the implementation of digital filters on FPGAs with Verilog.
 ## File Structure
-
+- BUILD/
+  - veri.exe
+- SRC/
+  - filterStructureImplementer.c
+  - main.cpp
+  - main.h
+  - structures.h
+  - verilogWriter.c
+- VERILOG_FILTER_PARTS/
+  - Adder.v
+  - Delay.v
+  - Multiplier.v
+- makefile
 ## Building
-
+To compile, enter "make" into the command line while in the directory of the provided makefile.
 ## Input:
 In the bash command line:
       `./executable integer_digits fractional_digits numerator_coefficient (...) / (denominator_coefficient (...)) optimize_true`
